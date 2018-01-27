@@ -19,15 +19,15 @@ def plot_total_hist(outputfile):
     plt.close('all')
 
 def update_hist(i, ax, data, bins):
-    print(i)
+    print(i+1)
     ax.clear()
     ax.set_ylabel('N')
     ax.set_xlabel('FF4 Bus Number')
     try:
-        ax.set_xlim(3600,np.max(data[:i])+1)
-    except ValueError:
-        ax.set_xlim(3600,3700)
-    ax.hist(data[:i], bins=bins, histtype='stepfilled')
+        ax.set_xlim(3600,np.max(data[:i+1])+1)
+        ax.hist(data[:i + 1], bins=bins, histtype='stepfilled')
+    except IndexError:
+        ax.hist(data, bins=bins, histtype='stepfilled')
 
 def plot_animation(outputfile):
 
@@ -40,7 +40,7 @@ def plot_animation(outputfile):
     predate_idx = random.sample(range(103), k=103)
     data[:103] = data[:103][predate_idx]
 
-    anihist = animation.FuncAnimation(fig, update_hist, data.size, fargs=(ax, data, bins))
+    anihist = animation.FuncAnimation(fig, update_hist, data.size+10, fargs=(ax, data, bins))
 
     ffWriter = animation.writers['ffmpeg']
     writer = ffWriter(fps=6)
