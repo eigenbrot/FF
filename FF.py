@@ -1,4 +1,5 @@
 #!/usr/bin/python
+import sys
 import random
 import numpy as np
 import matplotlib.pyplot as plt
@@ -47,5 +48,36 @@ def plot_animation(outputfile):
 
     anihist.save(outputfile, writer=writer)
 
+def print_stats():
+
+    data = np.loadtxt('data.txt')
+
+    hist, be = np.histogram(data, bins=np.arange(3600,3700))
+    be = be[:-1]
+    nzid = np.where(hist > 0)
+    maxbus = np.max(be[nzid])
+    minbus = np.min(be[nzid])
+
+    sortid = np.argsort(hist)[::-1]
+    sorted_bus = be[sortid]
+    sorted_hist = hist[sortid]
+    print('Top 3 buses:')
+    for i in range(3):
+        print('\t{} - {}'.format(sorted_bus[i], sorted_hist[i]))
+
+    missingid = np.where((be >= minbus) & (be <= maxbus) & (hist == 0))[0]
+    print('Missing buses:')
+    for i in missingid:
+        print('\t{}'.format(be[i]))
+
+    return
+    
 if __name__ == '__main__':
-    plot_animation('FF_buses.mp4')
+
+    try:
+        if sys.argv[1] == '-m':
+            plot_animation('FF_buses.mp4')
+        else:
+            print_stats()
+    except:
+        print_stats()
