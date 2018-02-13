@@ -25,17 +25,21 @@ def update_hist(i, ax, data, bins):
     ax.set_ylabel('N')
     ax.set_xlabel('FF4 Bus Number')
     try:
-        ax.set_xlim(3600,np.max(data[:i+1])+1)
+        ax.set_xlim(3600 - 0.5,np.max(data[:i+1])+0.5)
         ax.hist(data[:i + 1], bins=bins, histtype='stepfilled')
     except IndexError:
         ax.hist(data, bins=bins, histtype='stepfilled')
+    try:
+        ax.axvline(x=data[i], color='r', lw='0.7')
+    except IndexError:
+        ax.axvline(x=data[-1], color='r', lw='0.7')
 
 def plot_animation(outputfile):
 
     fig = plt.figure()
     ax = fig.add_subplot(111)
     data = np.loadtxt('data.txt')
-    bins = np.arange(3600,3700)
+    bins = np.arange(3600,3700) - 0.5
 
     random.seed(42)
     predate_idx = random.sample(range(103), k=103)
