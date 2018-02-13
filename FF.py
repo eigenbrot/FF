@@ -71,13 +71,24 @@ def print_stats():
         print('\t{}'.format(be[i]))
 
     return
-    
+
+def print_bus(bus):
+
+    data = np.loadtxt('data.txt')
+    idx = np.where(data == bus)[0]
+
+    print('bus {} has been ridden {} times'.format(bus, idx.size))
+
+    return
+
 if __name__ == '__main__':
 
     try:
         if sys.argv[1] == '-m':
             plot_animation('FF_buses.mp4')
+        elif sys.argv[1] == '-b':
+            print_bus(int(sys.argv[2]))
         else:
             print_stats()
-    except:
+    except IndexError:
         print_stats()
