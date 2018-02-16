@@ -5,9 +5,11 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 
+DATA_FILE = '/home/ade/PycharmProjects/FF/data.txt'
+
 def plot_total_hist(outputfile):
 
-    data = np.loadtxt('data.txt')
+    data = np.loadtxt(DATA_FILE)
 
     fig = plt.figure()
     ax = fig.add_subplot(111)
@@ -38,7 +40,7 @@ def plot_animation(outputfile):
 
     fig = plt.figure()
     ax = fig.add_subplot(111)
-    data = np.loadtxt('data.txt')
+    data = np.loadtxt(DATA_FILE)
     bins = np.arange(3600,3700) - 0.5
 
     random.seed(42)
@@ -54,7 +56,7 @@ def plot_animation(outputfile):
 
 def print_stats():
 
-    data = np.loadtxt('data.txt')
+    data = np.loadtxt(DATA_FILE)
 
     hist, be = np.histogram(data, bins=np.arange(3600,3700))
     be = be[:-1]
@@ -78,7 +80,7 @@ def print_stats():
 
 def print_bus(bus):
 
-    data = np.loadtxt('data.txt')
+    data = np.loadtxt(DATA_FILE)
     idx = np.where(data == bus)[0]
 
     print('bus {} has been ridden {} times'.format(bus, idx.size))
@@ -89,7 +91,7 @@ if __name__ == '__main__':
 
     try:
         if sys.argv[1] == '-m':
-            plot_animation('FF_buses.mp4')
+            plot_animation('/home/ade/PycharmProjects/FF/FF_buses.mp4')
         elif sys.argv[1] == '-b':
             print_bus(int(sys.argv[2]))
         else:
