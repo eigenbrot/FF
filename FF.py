@@ -36,7 +36,7 @@ def update_hist(i, ax, data, bins):
     except IndexError:
         ax.axvline(x=data[-1], color='r', lw='0.7')
 
-def plot_animation(outputfile):
+def plot_animation(outputfile, fps=12):
 
     fig = plt.figure()
     ax = fig.add_subplot(111)
@@ -47,10 +47,10 @@ def plot_animation(outputfile):
     predate_idx = random.sample(range(103), k=103)
     data[:103] = data[:103][predate_idx]
 
-    anihist = animation.FuncAnimation(fig, update_hist, data.size+10, fargs=(ax, data, bins))
+    anihist = animation.FuncAnimation(fig, update_hist, data.size + fps * 2, fargs=(ax, data, bins))
 
     ffWriter = animation.writers['ffmpeg']
-    writer = ffWriter(fps=6)
+    writer = ffWriter(fps=fps)
 
     anihist.save(outputfile, writer=writer)
 
@@ -91,7 +91,11 @@ if __name__ == '__main__':
 
     try:
         if sys.argv[1] == '-m':
-            plot_animation('/home/ade/PycharmProjects/FF/FF_buses.mp4')
+            try:
+                fps = int(sys.argv[2])
+            except:
+                fps = 12
+            plot_animation('/home/ade/PycharmProjects/FF/FF_buses.mp4', fps)
         elif sys.argv[1] == '-b':
             print_bus(int(sys.argv[2]))
         else:
