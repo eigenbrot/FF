@@ -1,4 +1,5 @@
 #!/usr/bin/python
+import os
 import sys
 import random
 import numpy as np
@@ -21,8 +22,8 @@ def plot_total_hist(outputfile):
     fig.savefig(outputfile)
     plt.close('all')
 
-def update_hist(i, ax, data, bins):
-    print(i+1)
+def update_hist(i, ax, data, bins, cols, numframes):
+    print('\r[{{:<{}}}]'.format(cols).format('='*int(cols*(i+1)/numframes)),end='')
     ax.clear()
     ax.set_ylabel('N')
     ax.set_xlabel('FF4 Bus Number')
@@ -47,11 +48,15 @@ def plot_animation(outputfile, fps=12):
     predate_idx = random.sample(range(103), k=103)
     data[:103] = data[:103][predate_idx]
 
-    anihist = animation.FuncAnimation(fig, update_hist, data.size + fps * 2, fargs=(ax, data, bins))
+    rows, cols = os.popen('stty size','r').read().split()
+    cols = int(cols) - 2
+    numframes = data.size + fps * 2
+    anihist = animation.FuncAnimation(fig, update_hist, numframes, fargs=(ax, data, bins, cols, numframes))
 
     ffWriter = animation.writers['ffmpeg']
     writer = ffWriter(fps=fps)
 
+    print('Making movie...')
     anihist.save(outputfile, writer=writer)
 
 def print_stats():
