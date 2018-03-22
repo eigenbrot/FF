@@ -103,6 +103,9 @@ if __name__ == '__main__':
             plot_animation('/home/ade/PycharmProjects/FF/FF_buses.mp4', fps)
         elif sys.argv[1] == '-b':
             print_bus(int(sys.argv[2]))
+        elif sys.argv[1] == '-p':
+            plot_total_hist('/home/ade/PycharmProjects/FF/FF_hist.png')
+            os.system('feh /home/ade/PycharmProjects/FF/FF_hist.png &')
         else:
             print_stats()
     except IndexError:
