@@ -92,12 +92,14 @@ def print_bus(bus):
 
     return
 
-def compute_run_prob(bus, run_length, N=10000):
+def compute_run_prob(bus, run_length, N=10000, flat_prob=False):
 
     data = np.loadtxt(DATA_FILE)
     numrides = data.shape[0]
     buses, nums = np.unique(data, return_counts=True)
     probs = nums/np.sum(nums)
+    if flat_prob:
+        probs = probs * 0 + 1./buses.size
 
     seq_count = 0
     for i in range(N):
