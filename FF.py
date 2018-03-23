@@ -92,6 +92,24 @@ def print_bus(bus):
 
     return
 
+def compute_run_prob(bus, run_length, N=10000):
+
+    data = np.loadtxt(DATA_FILE)
+    numrides = data.shape[0]
+    buses, nums = np.unique(data, return_counts=True)
+    probs = nums/np.sum(nums)
+
+    seq_count = 0
+    for i in range(N):
+
+        all_rides = np.random.choice(buses, size=numrides, p=probs)
+        for j in range(numrides - run_length):
+            if np.array_equal(all_rides[j:j+run_length], np.array([bus] * run_length)):
+                seq_count += 1
+                break
+
+    return seq_count / N
+
 if __name__ == '__main__':
 
     try:
