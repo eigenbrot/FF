@@ -16,7 +16,7 @@ def plot_total_hist(outputfile):
     ax = fig.add_subplot(111)
     ax.set_ylabel('N')
     ax.set_xlabel('FF4 Bus Number')
-    ax.set_xlim(3600,3680)
+    ax.set_xlim(np.min(data) - 1, np.max(data) + 1)
     bins = np.arange(3600,3700) - 0.5
     ax.hist(data, bins=bins, histtype='stepfilled')
     fig.savefig(outputfile)
