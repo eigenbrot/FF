@@ -18,7 +18,12 @@ def plot_total_hist(outputfile):
     ax.set_xlabel('FF4 Bus Number')
     ax.set_xlim(np.min(data) - 1, np.max(data) + 1)
     bins = np.arange(3600,3700) - 0.5
-    ax.hist(data, bins=bins, histtype='stepfilled')
+
+    colors = ['#a6cee3','#1f78b4','#b2df8a']
+    ax.hist(data, bins=bins, histtype='stepfilled', label='All', color=colors[-1])
+    ax.hist(data[-120:], bins=bins, histtype='stepfilled', color=colors[-2], label='Last 120 rides')
+    ax.hist(data[-30:], bins=bins, histtype='stepfilled', color=colors[0], label='Last 30 rides')
+    ax.legend(loc=0, frameon=False)
     fig.savefig(outputfile)
     plt.close('all')
 
