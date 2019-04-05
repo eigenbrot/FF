@@ -68,18 +68,26 @@ def print_stats():
 
     data = np.loadtxt(DATA_FILE)
 
-    hist, be = np.histogram(data, bins=np.arange(3600,3700))
-    be = be[:-1]
-    nzid = np.where(hist > 0)
-    maxbus = np.max(be[nzid])
-    minbus = np.min(be[nzid])
+    buses = []
+    hists = []
+    for lookback in [-30, -120, 0]:
+        hist, be = np.histogram(data[lookback:], bins=np.arange(3600,3700))
+        be = be[:-1]
+        nzid = np.where(hist > 0)
+        maxbus = np.max(be[nzid])
+        minbus = np.min(be[nzid])
 
-    sortid = np.argsort(hist)[::-1]
-    sorted_bus = be[sortid]
-    sorted_hist = hist[sortid]
+        sortid = np.argsort(hist)[::-1]
+        buses.append(be[sortid])
+        hists.append(hist[sortid])
+
     print('Top 3 buses:')
+    print('{:20}{:20}{:20}'.format('last 30 rides', 'last 120 rides', 'all time'))
     for i in range(3):
-        print('\t{} - {}'.format(sorted_bus[i], sorted_hist[i]))
+        str = ''
+        for j in range(3):
+            str += '{:20}'.format('{} - {}'.format(buses[j][i], hists[j][i]))
+        print(str)
 
     missingid = np.where((be >= minbus) & (be <= maxbus) & (hist == 0))[0]
     print('Missing buses:')
