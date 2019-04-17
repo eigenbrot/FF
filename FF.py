@@ -70,6 +70,7 @@ def print_stats():
 
     buses = []
     hists = []
+    danger = []
     for lookback in [-30, -120, 0]:
         hist, be = np.histogram(data[lookback:], bins=np.arange(3600,3700))
         be = be[:-1]
@@ -80,13 +81,17 @@ def print_stats():
         sortid = np.argsort(hist)[::-1]
         buses.append(be[sortid])
         hists.append(hist[sortid])
+        if lookback != 0:
+            danger.append(np.array(['*' if i in data[lookback:lookback+3] else '' for i in be])[sortid])
+        else:
+            danger.append(['' for i in be])
 
     print('Top 3 buses:')
     print('{:20}{:20}{:20}'.format('last 30 rides', 'last 120 rides', 'all time'))
     for i in range(3):
         str = ''
         for j in range(3):
-            str += '{:20}'.format('{} - {}'.format(buses[j][i], hists[j][i]))
+            str += '{:20}'.format('{} - {}{}'.format(buses[j][i], hists[j][i], danger[j][i]))
         print(str)
 
     missingid = np.where((be >= minbus) & (be <= maxbus) & (hist == 0))[0]
