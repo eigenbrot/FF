@@ -20,7 +20,10 @@ def plot_total_hist(outputfile):
     bins = np.arange(3600,3700) - 0.5
 
     colors = ['#a6cee3','#1f78b4','#b2df8a']
-    ax.hist(data, bins=bins, histtype='stepfilled', label='All', color=colors[-1])
+    locs = np.arange(0, data.size - 120, data.size / 3).astype(np.int)
+    for i, l in enumerate(locs):
+        ax.hist(data[l:], bins=bins, histtype='stepfilled', label='All' * (i == 0),
+                color=colors[-1], alpha=(i + 1) / locs.size)
     ax.hist(data[-120:], bins=bins, histtype='stepfilled', color=colors[-2], label='Last 120 rides')
     ax.hist(data[-30:], bins=bins, histtype='stepfilled', color=colors[0], label='Last 30 rides')
     ax.legend(loc=0, frameon=False)
