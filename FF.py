@@ -90,7 +90,7 @@ def print_stats():
             danger.append(['' for i in be])
 
     print('Top 3 buses:')
-    print('{:20}{:20}{:20}'.format('last 30 rides', 'last 120 rides', 'all time'))
+    print('{:20}{:20}{:20}'.format('last 30 rides', 'last 120 rides', 'all time ({} rides)'.format(data.size)))
     for i in range(3):
         str = ''
         for j in range(3):
